@@ -49,16 +49,26 @@ void reverse(long *arr, long i, long *b, long j)
 }
 void push(long a)
 {
-    stack[++si] = a;
-    reverse(stack, si + 1, queue, 0);
+    if (si < MAX_SIZE)
+    {
+        stack[++si] = a;
+        reverse(stack, si + 1, queue, 0);
+    }
+    else
+    {
+        printf("Queue Overflow!!!\n");
+    }
 }
 void pop()
 {
     reverse(queue, si--, stack, 0);
     if (si < 0)
+    {
         si = -1;
+        printf("Queue Empty!!!\n");
+    }
 }
-int top()
+int front()
 {
     return queue[si];
 }
@@ -69,9 +79,10 @@ long main()
     /* change MAX_SIZE */
     for (long i = 2; i < 4; i++)
         push(i * i);
-    top();
+    front();
     pop();
     push(99);
+    pop();
     pop();
     return 0;
 }
