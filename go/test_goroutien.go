@@ -14,6 +14,7 @@ func run(wg *sync.WaitGroup) {
 		}(i, wg)
 	}
 }
+
 func main() {
 	var wg sync.WaitGroup
 	run(&wg)
