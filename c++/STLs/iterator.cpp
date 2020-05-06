@@ -1,180 +1,105 @@
-// C++ program to implement Custom Linked List and
-// iterator pattern.
-#include <bits/stdc++.h>
+// #include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
-// Custom class to handle Linked List operations
-// Operations like push_back, push_front, pop_back,
-// pop_front, erase, size can be added here
 template <typename T>
-class LinkedList
+class linkedList
 {
-    // Forward declaration
-    class Node;
-
-public:
-    LinkedList<T>() noexcept
-    {
-        // caution: static members can't be
-        // initialized by initializer list
-        m_spRoot = nullptr;
-    }
-
-    // Forward declaration must be done
-    // in the same access scope
-    class Iterator;
-
-    // Root of LinkedList wrapped in Iterator type
-    Iterator begin()
-    {
-        return Iterator(m_spRoot);
-    }
-
-    // End of LInkedList wrapped in Iterator type
-    Iterator end()
-    {
-        return Iterator(nullptr);
-    }
-
-    // Adds data to the end of list
-    void push_back(T data);
-
-    void Traverse();
-
-    // Iterator class can be used to
-    // sequentially access nodes of linked list
-    class Iterator
-    {
-    public:
-        Iterator() noexcept : m_pCurrentNode(m_spRoot) {}
-
-        Iterator(const Node *pNode) noexcept : m_pCurrentNode(pNode) {}
-
-        Iterator &operator=(Node *pNode)
-        {
-            this->m_pCurrentNode = pNode;
-            return *this;
-        }
-
-        // Prefix ++ overload
-        Iterator &operator++()
-        {
-            if (m_pCurrentNode)
-                m_pCurrentNode = m_pCurrentNode->pNext;
-            return *this;
-        }
-
-        // Postfix ++ overload
-        Iterator operator++(int)
-        {
-            Iterator iterator = *this;
-            ++*this;
-            return iterator;
-        }
-
-        bool operator!=(const Iterator &iterator)
-        {
-            return m_pCurrentNode != iterator.m_pCurrentNode;
-        }
-
-        int operator*()
-        {
-            return m_pCurrentNode->data;
-        }
-
-    private:
-        const Node *m_pCurrentNode;
-    };
-
-private:
     class Node
     {
         T data;
         Node *pNext;
-
-        // LinkedList class methods need
-        // to access Node information
-        friend class LinkedList;
+        friend class linkedList;
     };
-
-    // Create a new Node
-    Node *GetNode(T data)
+    Node *getNode(T data)
     {
         Node *pNewNode = new Node;
         pNewNode->data = data;
         pNewNode->pNext = nullptr;
-
         return pNewNode;
     }
-
-    // Return by reference so that it can be used in
-    // left hand side of the assignment expression
-    Node *&GetRootNode()
+    Node *&getRootNode()
     {
         return m_spRoot;
     }
-
     static Node *m_spRoot;
-};
 
-template <typename T>
-/*static*/ typename LinkedList<T>::Node *LinkedList<T>::m_spRoot = nullptr;
-
-template <typename T>
-void LinkedList<T>::push_back(T data)
-{
-    Node *pTemp = GetNode(data);
-    if (!GetRootNode())
+public:
+    linkedList<T>() noexcept
     {
-        GetRootNode() = pTemp;
+        m_spRoot = nullptr;
     }
-    else
+    void push(T data)
     {
-        Node *pCrawler = GetRootNode();
-        while (pCrawler->pNext)
+        Node *pTemp = getNode(data);
+        if (!getRootNode())
+            getRootNode() = pTemp;
+        else
         {
-            pCrawler = pCrawler->pNext;
+            Node *curr = getRootNode();
+            while (curr->pNext)
+                curr = curr->pNext;
+            curr->pNext = pTemp;
         }
-
-        pCrawler->pNext = pTemp;
     }
-}
-
-template <typename T>
-void LinkedList<T>::Traverse()
-{
-    Node *pCrawler = GetRootNode();
-
-    while (pCrawler)
+    void traverse()
     {
-        cout << pCrawler->data << " ";
-        pCrawler = pCrawler->pNext;
+        Node *curr = getRootNode();
+        while (curr)
+        {
+            cout << curr->data << "->";
+            curr = curr->pNext;
+        }
+        cout << "EOL" << endl;
     }
+    class iterator
+    {
+        const Node *m_pCurrent;
 
-    cout << endl;
-}
-
-//Driver program
+    public:
+        iterator() noexcept : m_pCurrent(m_spRoot) {}
+        iterator(const Node *pNode) noexcept : m_pCurrent(pNode) {}
+        iterator &operator=(Node *pNode)
+        {
+            this->m_pCurrent = pNode;
+            return *this;
+        }
+        iterator &operator++()
+        {
+            if (m_pCurrent)
+                m_pCurrent = m_pCurrent->pNext;
+            return *this;
+        }
+        iterator operator++(int)
+        {
+            iterator itr = *this;
+            ++*this;
+            return itr;
+        }
+        bool operator!=(const iterator itr)
+        {
+            return m_pCurrent != itr.m_pCurrent;
+        }
+        T operator*()
+        {
+            return m_pCurrent->data;
+        }
+    };
+    iterator begin() { return iterator(m_spRoot); }
+    iterator end() { return iterator(nullptr); }
+};
+template <typename T>
+typename linkedList<T>::Node *linkedList<T>::m_spRoot = nullptr;
 int main()
 {
-    LinkedList<int> list;
-
-    // Add few items to the end of LinkedList
-    list.push_back(1);
-    list.push_back(2);
-    list.push_back(3);
-
+    linkedList<int> listInt;
+    listInt.push(1);
+    listInt.push(2);
     cout << "Traversing LinkedList through method" << endl;
-    list.Traverse();
-
+    listInt.traverse();
     cout << "Traversing LinkedList through Iterator" << endl;
-    for (LinkedList<int>::Iterator iterator = list.begin();
-         iterator != list.end(); iterator++)
-    {
-        cout << *iterator << " ";
-    }
-
-    cout << endl;
-
+    linkedList<int>::iterator itr;
+    for (itr = listInt.begin(); itr != listInt.end(); itr++)
+        cout << *itr << " ";
     return 0;
 }
