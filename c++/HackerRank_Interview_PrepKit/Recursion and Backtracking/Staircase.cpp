@@ -5,28 +5,36 @@
 using namespace std;
 
 // Complete the stepPerms function below.
-void stepPermsUntil(int n, int *count)
+void stepPermsUntil(int n, int count[])
 {
     if (n < 0)
         return;
-    if (n == 0)
-        *count++;
-    else
+    else if (n == 1 || n == 0)
+    {
+        count[n] = 1;
+    }
+    else if (n == 2)
+    {
+        count[n] = 2;
+    }
+    else if (count[n] == 0)
     {
         stepPermsUntil(n - 3, count);
         stepPermsUntil(n - 2, count);
         stepPermsUntil(n - 1, count);
+        count[n] = count[n - 3] + count[n - 2] + count[n - 1];
     }
 }
 int stepPerms(int n)
 {
-    int count = 0;
-    stepPermsUntil(n, &count);
-    return count;
+    int *count = new int[n + 1]();
+    stepPermsUntil(n, count);
+    return count[n];
 }
 
 int main()
 {
+    // cout << stepPerms(4);
     ofstream fout(getenv("OUTPUT_PATH"));
 
     int s;
