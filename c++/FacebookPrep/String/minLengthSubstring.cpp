@@ -25,7 +25,11 @@ map<char, int> getMap(string s)
         if (mt.count(i))
             mt[i]++;
         else
-            mt.insert(pair(i, 1));
+        {
+            pair<char, int> temp = {i, i};
+            // mt.insert(pair(i, 1));
+            mt.insert(temp);
+        }
     }
     return mt;
 }
