@@ -17,8 +17,8 @@ int main()
     // auto max = get_max(m);
     // cout << m.size() << endl;
     // cout << m.at(0) << endl;
-    cout << m.at(2) << endl;
-    // m.count(1)
+    // cout << m.at(4) << endl;
+    cout << m.count(4) << endl;
     // cout << m.at(2) << endl;
     // cout << m.at(3) << endl;
     // cout << m.at(7) << endl;
