@@ -14,7 +14,7 @@ void func(mutex &mx)
     }
 }
 
-bool run = true;
+// bool run = true;
 void conFunc(mutex &mx, condition_variable &cvar)
 {
     unique_lock<mutex> lock(mx);
@@ -23,6 +23,7 @@ void conFunc(mutex &mx, condition_variable &cvar)
     // {
     // }
     cout << "Inside conFunc Thread :: " << this_thread::get_id() << endl;
+    lock.unlock();
 }
 int main()
 {
@@ -41,7 +42,7 @@ int main()
         lock_guard<mutex> lock(mxt);
         cvar.notify_all();
     }
-    run = false;
+    // run = false;
     t2.join();
 
     return 0;
