@@ -33,7 +33,6 @@ void visibleNodes_until(Node *root, int height, map<int, int> &mp)
             pair<int, int> temp = {height, root->data};
             mp.insert(temp);
         }
-        // cout << root->data << " " << height << " - ";
         visibleNodes_until(root->right, height + 1, mp);
     }
 }
@@ -43,6 +42,7 @@ int visibleNodes(Node *root)
     visibleNodes_until(root, 0, mp);
     // for (auto i : mp)
     //     cout << i.second << " ";
+    // cout << endl;
     return mp.size();
 }
 // These are the tests we use to determine if the solution is correct.
