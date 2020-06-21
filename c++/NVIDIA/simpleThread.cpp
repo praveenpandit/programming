@@ -7,7 +7,7 @@ using namespace std;
 template <typename Type>
 void fun(Type x)
 {
-    cout << " Type of the this Thread :: " << typeid(Type).name() << endl;
+    cout << "Type of the this Thread :: " << typeid(Type).name() << endl;
 }
 
 int main()
